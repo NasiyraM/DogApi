@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -10,15 +11,18 @@
             var imageHolder = document.getElementById("imageHolder");
             var generateButton = document.getElementById("generateButton");
             var breedsElement = document.getElementById("breeds");
+            var doggieList = document.getElementById("doggieList");
+            doggieList.addEventListener('change', function () {
+                var current_breed = $(this).val();
+                console.log(current_breed);
+            });
             $.get("https://dog.ceo/api/breeds/list/all", function (data) {
                 console.log("Checking All Breeds Endpoint");
                 console.log(data);
                 var breeds = data.message;
                 for (const key in breeds) {
-                    console.log(key);
-                    var breedTypeElement = document.createElement('p');
-                    breedTypeElement.innerHTML = key;
-                    breedsElement.appendChild(breedTypeElement);
+                    var doggieOption = `<option value="${key}">${key}</option>`;
+                    doggieList.insertAdjacentHTML('beforeend', doggieOption);
                 }
             });
             $.get("https://dog.ceo/api/breeds/image/random", function (data) {
@@ -47,12 +51,16 @@
         });
     </script>
 </head>
+
 <body>
     <h1>Dogs</h1>
     <div id="imageHolder">
     </div>
     <button class="btn btn-success" id="generateButton"> Generate Image</button>
+    <select id="doggieList">
+    </select>
     <div id="breeds">
     </div>
 </body>
+
 </html>
