@@ -6,19 +6,43 @@
         <script type="text/javascript" >
             $( document ).ready(function() {
                 console.log( "ready!" );
+                var imageHolder = document.getElementById("imageHolder");
+                var generateButton = document.getElementById("generateButton");
+                generateButton.addEventListener('click', callbackForNewImage)
                 $.get( "https://dog.ceo/api/breeds/image/random", function( data ) {
                     console.log("The response from the dog api");
                     console.log(data);
+                    console.log(data.message);
+                    appendImageWay1(data);
                 });
+                function callbackForNewImage () {
+                   $.get( "https://dog.ceo/api/breeds/image/random", function( data ) {
+                       console.log("The response from the dog api");
+                       console.log(data);
+                       console.log(data.message);
+                       appendImageWay1(data);
+                   });
+               }
+                function appendImageWay1(data) {
+                    console.log("Apending Way 1");
+                    var imageElement = document.createElement("img");
+                    imageElement.src = data.message;
+                    imageElement.style.height="200px";
+                    imageElement.style.width="200px";
+                    imageHolder.appendChild(imageElement);
+                }
+                function appendImageWay2(data) {
+                    console.log("Apending Way 2");
+                    var imageElement = `<img src="${data.message}" />`;
+                    imageHolder.innerHtml=imageElement;
+                }
             });
-
-            $.getJSON
-            console.log(JSON);
         </script>
     </head>
     <body>
         <h1>Dogs</h1>
-
-
+        <div id="imageHolder">
+        </div>
+        <button class="btn btn-success" id="generateButton"> Generate Image</button>
     </body>
 </html>
