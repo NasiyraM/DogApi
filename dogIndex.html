@@ -1,48 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/javascript" >
-            $( document ).ready(function() {
-                console.log( "ready!" );
-                var imageHolder = document.getElementById("imageHolder");
-                var generateButton = document.getElementById("generateButton");
-                generateButton.addEventListener('click', callbackForNewImage)
-                $.get( "https://dog.ceo/api/breeds/image/random", function( data ) {
-                    console.log("The response from the dog api");
-                    console.log(data);
-                    console.log(data.message);
-                    appendImageWay1(data);
-                });
-                function callbackForNewImage () {
-                   $.get( "https://dog.ceo/api/breeds/image/random", function( data ) {
-                       console.log("The response from the dog api");
-                       console.log(data);
-                       console.log(data.message);
-                       appendImageWay1(data);
-                   });
-               }
-                function appendImageWay1(data) {
-                    console.log("Apending Way 1");
-                    var imageElement = document.createElement("img");
-                    imageElement.src = data.message;
-                    imageElement.style.height="200px";
-                    imageElement.style.width="200px";
-                    imageHolder.appendChild(imageElement);
-                }
-                function appendImageWay2(data) {
-                    console.log("Apending Way 2");
-                    var imageElement = `<img src="${data.message}" />`;
-                    imageHolder.innerHtml=imageElement;
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log("ready!");
+            var imageHolder = document.getElementById("imageHolder");
+            var generateButton = document.getElementById("generateButton");
+            var breedsElement = document.getElementById("breeds");
+            $.get("https://dog.ceo/api/breeds/list/all", function (data) {
+                console.log("Checking All Breeds Endpoint");
+                console.log(data);
+                var breeds = data.message;
+                for (const key in breeds) {
+                    console.log(key);
+                    var breedTypeElement = document.createElement('p');
+                    breedTypeElement.innerHTML = key;
+                    breedsElement.appendChild(breedTypeElement);
                 }
             });
-        </script>
-    </head>
-    <body>
-        <h1>Dogs</h1>
-        <div id="imageHolder">
-        </div>
-        <button class="btn btn-success" id="generateButton"> Generate Image</button>
-    </body>
+            $.get("https://dog.ceo/api/breeds/image/random", function (data) {
+                appendImageWay2(data);
+            });
+            generateButton.addEventListener('click', function callbackForNewImage() {
+                $.get("https://dog.ceo/api/breeds/image/random", function (data) {
+                    appendImageWay2(data);
+                });
+            })
+            //Appends the javascript
+            function appendImageWay1(data) {
+                console.log("Apending Way 1");
+                var imageElement = document.createElement("img");
+                imageElement.src = data.message;
+                imageElement.style.height = "200px";
+                imageElement.style.width = "200px";
+                imageHolder.appendChild(imageElement);
+            }
+            //Appends the button string literal
+            function appendImageWay2(data) {
+                console.log("Apending Way 2");
+                var imageElement = `<img width="200px" height="200px" src="${data.message}" />`;
+                imageHolder.insertAdjacentHTML('beforeend', imageElement);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Dogs</h1>
+    <div id="imageHolder">
+    </div>
+    <button class="btn btn-success" id="generateButton"> Generate Image</button>
+    <div id="breeds">
+    </div>
+</body>
 </html>
