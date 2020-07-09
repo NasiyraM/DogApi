@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -12,9 +11,12 @@
             var generateButton = document.getElementById("generateButton");
             var breedsElement = document.getElementById("breeds");
             var doggieList = document.getElementById("doggieList");
-            doggieList.addEventListener('change', function () {
+            doggieList.addEventListener('change', function() {
                 var current_breed = $(this).val();
                 console.log(current_breed);
+                $.get(`https://dog.ceo/api/breed/${current_breed}/images/random`, function (data) {
+                    appendImageWay2(data);
+                });
             });
             $.get("https://dog.ceo/api/breeds/list/all", function (data) {
                 console.log("Checking All Breeds Endpoint");
@@ -51,7 +53,6 @@
         });
     </script>
 </head>
-
 <body>
     <h1>Dogs</h1>
     <div id="imageHolder">
@@ -62,5 +63,4 @@
     <div id="breeds">
     </div>
 </body>
-
 </html>
